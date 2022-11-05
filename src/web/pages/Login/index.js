@@ -10,7 +10,7 @@ import { userLoginActionCreator, clearMessageUserActionCreator } from "../../../
 import "./index.scss"
 
 // input fields
-import Input from "../../UI/InputFields/input";
+import Input from "../../UI/InputFields/input"; 
 import SubmitButton from "../../UI/InputFields/submitButton";
 import Password from "../../UI/InputFields/password";
 

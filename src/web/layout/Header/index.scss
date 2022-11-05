@@ -1,0 +1,31 @@
+.header__appbar{
+    background-color: white!important;
+    color: black !important;
+}
+.header__logo{
+    margin-left: 0.3rem !important;
+    font-family: 'Work Sans', sans-serif !important;
+    font-size: 20px;
+    font-weight: 400 !important;
+}
+
+.header__menuicon{
+    margin-right: 1rem !important;
+}
+
+.header__user-icon{
+    margin-left: auto !important;
+}
+
+.header__user{
+    justify-content: end;
+    font-family: 'Work Sans', sans-serif !important;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.user-menu .MuiPaper-root{
+    top: 50px !important;
+    left: 1650px !important;
+    right: 50px !important;
+}

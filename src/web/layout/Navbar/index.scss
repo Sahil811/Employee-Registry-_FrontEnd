@@ -1,0 +1,79 @@
+.navbar__container {
+    position: fixed !important;
+    z-index: 799 !important;
+  }
+  
+  .navbar__listitem-text .MuiTypography-root {
+    font-family: 'Work Sans', sans-serif !important;
+    font-size: 14px !important;
+  }
+  
+  .navbar__drawer {
+    background-color: #131e27;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .navbar__list {
+    color: white;
+  }
+  
+  .navbar__listitem {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding-top: 1.1rem !important;
+    padding-bottom: 0.8rem !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+  }
+  
+  .navbar__listitem:first-child {
+    margin-top: -0.6rem !important;
+    padding-top: 3rem !important;
+  }
+  
+  .navbar__listitem .Mui-selected {
+    background-color: #ffda6a !important;
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+    padding-top: 0.7rem !important;
+    padding-bottom: 0.5rem !important;
+    color: black !important;
+    border-radius: 10px;
+  }
+  
+  .navbar__listitem .Mui-selected .navbar__listitem-icon {
+    color: black !important;
+  }
+  
+  .navbar__listitem-icon {
+    color: white !important;
+    display: block !important;
+    text-align: center !important;
+  }
+  
+  .navbar__listitem-text {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .navbar__listitem:hover {
+    background-color: #807a79;
+    color: #ffda6a;
+  }
+  
+  // .navbar__listitem:hover .navbar__listitem-icon{
+  //     color: #FFDA6A !important;
+  // }
+  
+  .navbar__divider {
+    border-bottom: 1px solid grey;
+    width: 115px;
+  }
+  
+  .MuiDrawer-paper {
+    box-sizing: border-box;
+    width: 100px;
+  }
+  

@@ -1,9 +1,32 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from "react-redux";
 import store from "../src/redux/store";
-import routes from "./route/route"
 import './App.css';
+const Signup = lazy(() => import('./web/pages/Signup'));
+const Login = lazy(() => import('./web/pages/Login'));
+const UserList = lazy(() => import('./web/pages/UserList'));
+
+const routes = [
+  {
+    path: '/signup',
+    exact: true,
+    name: 'Signup',
+    element: Signup,
+  },
+  {
+    path: '/',
+    exact: true,
+    name: 'Login',
+    element: Login,
+  },
+  {
+    path: '/userList',
+    exact: true,
+    name: 'UserList',
+    element: UserList,
+  },
+];
 
 function App() {
   return (
