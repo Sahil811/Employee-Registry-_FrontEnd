@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import { userRegisterActionCreator, clearMessageUserActionCreator } from "../../../redux/slices/user";
 import "./index.scss"
 
 // input fields
@@ -13,6 +17,9 @@ import Password from "../../UI/InputFields/password";
 
 export default function Signup() {
   const navigate = useNavigate()
+  const messageData = useSelector((state) => state.userData.messageData);
+  const dispatch = useDispatch();
+
   //   yup validation schema
   const schema = yup
     .object({
@@ -50,12 +57,25 @@ export default function Signup() {
   });
 
   // form submit handler
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit =  async ({ userName, email, password, role, firstName, lastName, address}) => {
+     dispatch(userRegisterActionCreator({ userName, email, password, role, firstName, lastName, address}));
   };
 
+  useEffect(() => {
+    if (messageData) {
+      if (messageData?.code === 100) {
+        toast.success(messageData?.message);
+        setTimeout(() => { navigate("/login") }, 2000)
+      } else {
+        toast.error(messageData?.message);
+      }
+      dispatch(clearMessageUserActionCreator());
+    }
+  }, [messageData]);
+
   return (
-      <div className="SignUpPage">
+      <div className="SignUpPage"> 
+         <ToastContainer style={{ top: '90px' }} />
          <div className="form-container" style={styleSheet.container}>
             <h1>Sign up</h1>
             <form onSubmit={handleSubmit(onSubmit)} style={styleSheet.formStyle}>
