@@ -1,0 +1,77 @@
+.react-form-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .react-form-container input {
+    border: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-bottom: #b3b3b3 1px solid;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .react-form-container label {
+    font-size: 20px;
+    padding-bottom: 5px;
+  }
+  /* textarea */
+  .react-form-container.textarea textarea {
+
+    border-radius: 6px;
+    padding: 5px;
+  }
+  /* dropdown selector */
+  .react-form-container.select {
+    flex-direction: row;
+  }
+  .react-form-container.select select {
+    margin-left: 10px;
+    min-width: 40px;
+    outline: none;
+  }
+  .react-form-container .options > * {
+    margin-right: 30px;
+  }
+  /* password */
+  .react-form-container.password .password-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .react-form-container.password .password-field input {
+    width: 100%;
+  }
+
+  .react-form-container.password .password-field img {
+    cursor: pointer;
+    position: absolute;
+    width: 20px;
+    right: 10px;
+  }
+  
+  /* button */
+  .react-form-container.submit-button input {
+    border: none;
+    outline: none;
+    width: 200px;
+    height: 50px;
+    border-radius: 6px;
+  }
+  
+  /* error */
+  .error {
+    position: absolute;
+    bottom: -18px;
+    color: #fc4848;
+    font-size: 12px;
+  }
+  
