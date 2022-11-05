@@ -65,7 +65,7 @@ export default function Signup() {
     if (messageData) {
       if (messageData?.code === 100) {
         toast.success(messageData?.message);
-        setTimeout(() => { navigate("/login") }, 2000)
+        setTimeout(() => { navigate("/") }, 2000)
       } else {
         toast.error(messageData?.message);
       }
@@ -122,7 +122,8 @@ export default function Signup() {
                 placeholder={"Password"}
                 />
                <SubmitButton type="submit"/>
-               <Button onClick={() => navigate('/login')} variant="outlined">Login</Button>
+               <div>Already have an account?</div>
+               <Button onClick={() => navigate('/')} variant="outlined">Login</Button>
             </form>
         </div>
      </div>

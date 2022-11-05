@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from "react-redux";
 import store from "../src/redux/store";
@@ -9,11 +10,13 @@ function App() {
     <div className="App">
       <Provider store={store}>
         <Router>
-          <Routes>
-            {
-              routes.map(route => <Route key={`${route.name}`} exact path={`${route.path}`} element={<route.element />} />)
-            }
-          </Routes>
+          <Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                {
+                  routes.map(route => <Route key={`${route.name}`} exact path={`${route.path}`} element={<route.element />} />)
+                }
+              </Routes>
+          </Suspense>
         </Router>
       </Provider>
     </div>

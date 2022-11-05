@@ -3,17 +3,17 @@ import fetchUtility from '../fetchUtility';
 import { SERVER_URL } from '../../web/constants';
 import Cookies from "js-cookie";
 
-const userInfo = Cookies.get("userInfo")
-  ? JSON.parse(Cookies.get("userInfo"))
-  : null;
-
-// export const userLoginActionCreator = createAsyncThunk(
-//   "user/login",
-//   async ({ email, password }) => {
-//     const { data } = await axios.post("/api/users/login", { email, password });
-//     return data;
-//   }
-// );
+export const userLoginActionCreator = createAsyncThunk(
+  "user/login",
+  async (payload) => {
+    const { data } = await fetchUtility(
+        'post',
+        `${SERVER_URL.USER_LOGIN}`,
+        payload
+      );
+    return data;
+  }
+);
 
 // export const userProfileUpdateActionCreator = createAsyncThunk(
 //   "users/profile",
@@ -59,6 +59,7 @@ export const userSlice = createSlice({
     logout: {
       reducer: () => {
         Cookies.remove("userInfo");
+        Cookies.remove("token");
         return null;
       },
     },
@@ -68,29 +69,18 @@ export const userSlice = createSlice({
         }
     }
   },
-//   extraReducers: {
-//     // [userLoginActionCreator.pending]: (state, action) => {
-//     //   state.status = "loading";
-//     // },
-//     // [userLoginActionCreator.fulfilled]: (state, action) => {
-//     //   //state.status = "succeeded";
-//     //   Cookies.set("userInfo", JSON.stringify(action.payload));
-//     //   return action.payload;
-//     // },
-//     // [userLoginActionCreator.rejected]: (state, action) => {
-//     //   state.status = "failed";
-//     //   state.error = action.error.message;
-//     // },
-
-//     // [userProfileUpdateActionCreator.fulfilled]: (state, action) => {
-//     //   Cookies.set("userInfo", JSON.stringify(action.payload));
-//     //   return action.payload;
-//     // },
-//     [userRegisterActionCreator.fulfilled]: (state, action) => {
-//       state.messageData =  action.payload;
-//     },
-//   },
   extraReducers: (builder) => {
+    builder.addCase(userLoginActionCreator.fulfilled, (state, action) => {
+        state.loading = false;
+        state.messageData = action?.payload
+        state.userInfo = action?.payload?.data?.user
+        Cookies.set("userInfo", JSON.stringify(action?.payload?.data?.user));
+        Cookies.set("token", JSON.stringify(action?.payload?.data?.accessToken));
+      });
+      builder.addCase(userLoginActionCreator.rejected, (state, action) => {
+        state.loading = false;
+        state.messageData = action?.payload;
+      });
     builder.addCase(userRegisterActionCreator.fulfilled, (state, action) => {
       state.loading = false;
       state.messageData = action?.payload
