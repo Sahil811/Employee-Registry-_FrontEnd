@@ -6,4 +6,12 @@ export const SERVER_URL = {
 
   EMPLOYEE_LIST: `${BASIC_URL}/user/list`,
   EMPLOYEE_UPDATE: `${BASIC_URL}/user/update`,
+  EMPLOYEE_DELETE: `${BASIC_URL}/user/edit`,
+};
+
+export const ADMIN_USER_ACTIONS = {
+  VERIFIED: 1,
+  BLOCKED: 2,
+  UNBLOCKED: 3,
+  DELETED: 4,
 };

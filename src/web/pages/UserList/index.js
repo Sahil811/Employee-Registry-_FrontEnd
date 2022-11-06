@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
-import { employeeListActionCreator, employeeUpdateActionCreator, clearMessageEmployeeActionCreator } from "../../../redux/slices/employeeList";
+import { employeeListActionCreator, employeeUpdateActionCreator, employeeDeleteActionCreator, clearMessageEmployeeActionCreator } from "../../../redux/slices/employeeList";
 import TableComponent from "../../components/Table"
 import Wrapper from "../../components/Wrapper"
+import { ADMIN_USER_ACTIONS } from "../../constants";
 
 export default function UserList() {
   const employeeData = useSelector((state) => state.employeeData.list);
@@ -17,6 +18,24 @@ export default function UserList() {
 
   const tableHeader = ["No.", "User Name", "Email", "First Name", "Last Name", "Address", "Role"]
 
+  const updateEmployeeHandler = (data) => {
+     dispatch(employeeUpdateActionCreator(
+      {
+        userRef: data.id,
+        ...data
+      }
+     ))
+  }
+
+  const deleteEmployeeHandler = (id) => {
+    dispatch(employeeDeleteActionCreator(
+     {
+       userRef: id,
+       action: ADMIN_USER_ACTIONS.DELETED
+     }
+    ))
+ }
+
   useEffect(() => {
     if (messageData) {
       if (messageData?.code === 100) {
@@ -29,19 +48,10 @@ export default function UserList() {
     }
   }, [messageData]);
 
-  const updateEmployeeHandler = (data) => {
-     dispatch(employeeUpdateActionCreator(
-      {
-        userRef: data.id,
-        ...data
-      }
-     ))
-  }
-
   return <Wrapper>
     <ToastContainer style={{ top: '90px' }} />
     <div>
-      <TableComponent update={updateEmployeeHandler} data={employeeData} tableHeader={tableHeader}/>
+      <TableComponent deleteHandler={deleteEmployeeHandler} updateHandler={updateEmployeeHandler} data={employeeData} tableHeader={tableHeader}/>
     </div>
   </Wrapper>
 }

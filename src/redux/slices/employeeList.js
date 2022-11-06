@@ -26,7 +26,19 @@ export const employeeUpdateActionCreator = createAsyncThunk(
   }
 );
 
-const isPendingAction = isPending(employeeListActionCreator, employeeUpdateActionCreator );
+export const employeeDeleteActionCreator = createAsyncThunk(
+  "employee/delete",
+  async (payload) => {
+    const { data } = await fetchUtility(
+        'post',
+        `${SERVER_URL.EMPLOYEE_DELETE}`,
+        payload
+      );
+    return data;
+  }
+);
+
+const isPendingAction = isPending(employeeListActionCreator, employeeUpdateActionCreator, employeeDeleteActionCreator );
 
 export const  employeeSlice = createSlice({
   name: "employee",
@@ -58,6 +70,14 @@ export const  employeeSlice = createSlice({
       state.messageData = action?.payload
     });
     builder.addCase(employeeUpdateActionCreator.rejected, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload;
+    });
+    builder.addCase(employeeDeleteActionCreator.fulfilled, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload
+    });
+    builder.addCase(employeeDeleteActionCreator.rejected, (state, action) => {
       state.loading = false;
       state.messageData = action?.payload;
     });

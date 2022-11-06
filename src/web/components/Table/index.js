@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from '@mui/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import DoneIcon from "@mui/icons-material/DoneAllTwoTone";
 import RevertIcon from "@mui/icons-material/NotInterestedOutlined";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const useStyles =  makeStyles(theme => ({
   root: {
@@ -65,15 +66,17 @@ const CustomTableCell = ({ row, name, objectKey, onChange }) => {
   );
 };
 
-export default function TableComponent({data, tableHeader, update}) {
+export default function TableComponent({data, tableHeader, updateHandler, deleteHandler}) {
+
   const [rows, setRows] = React.useState([]);
 
-  if(data && data.length && !rows.length) {
-    const tempRows = data.map((employee) => createData(employee._id, employee.userName, employee.email, employee.firstName, employee.lastName, employee.address, employee.role))
-    setRows(tempRows)
-  }
   const [previous, setPrevious] = React.useState({});
   const classes = useStyles();
+
+  useEffect(() => {
+    const tempRows = data?.map((employee) => createData(employee._id, employee.userName, employee.email, employee.firstName, employee.lastName, employee.address, employee.role))
+    setRows(tempRows)
+  }, [data])
 
   const onToggleEditMode = id => {
     setRows(state => {
@@ -121,8 +124,13 @@ export default function TableComponent({data, tableHeader, update}) {
 
   const updateUser = (id) => {
      data = rows.find(row => row.id === id)
-     update(data)
+     updateHandler(data)
      onToggleEditMode(id)
+  }
+
+  const deleteUser = (id) => {
+     deleteHandler(id)
+     setRows([])
   }
 
   return (
@@ -133,6 +141,7 @@ export default function TableComponent({data, tableHeader, update}) {
           <TableRow>
             {tableHeader && tableHeader.length && tableHeader.map((header) => <TableCell align="left">{header}</TableCell>)}
             <TableCell align="left">Edit</TableCell>
+            <TableCell align="left">Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -169,6 +178,13 @@ export default function TableComponent({data, tableHeader, update}) {
                     <EditIcon />
                   </IconButton>
                 )}
+              </TableCell>
+              <TableCell className={classes.selectTableCell}>     
+                  <IconButton
+                    onClick={() => deleteUser(row.id)}
+                  >
+                    <DeleteOutlineOutlinedIcon />
+                  </IconButton>   
               </TableCell>
             </TableRow>
           ))}
