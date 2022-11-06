@@ -1,7 +1,11 @@
 import {lazy} from "react";
 import { ReactComponent as HomeSvg } from '../web/assets/svg/home.svg';
 import { ReactComponent as HomeSelectedSvg } from '../web/assets/svg/home-selected.svg';
+import { ReactComponent as IntelSvg  } from '../web/assets/svg/intel.svg';
+import { ReactComponent as IntelSelectedSvg } from '../web/assets/svg/intel-selected.svg';
 const UserList = lazy(() => import('../web/pages/UserList'));
+const ProfilePage = lazy(() => import('../web/pages/Profile'));
+
 
 const routes = [
   {
@@ -9,42 +13,19 @@ const routes = [
     exact: true,
     name: 'Employee',
     element: UserList,
-    menutype: 'main',
+    menuType: 'main',
     icon: <HomeSvg />,
     selectedIcon: <HomeSelectedSvg />
   },
-  // {
-  //   path: '/myprojects',
-  //   name: 'My Projects',
-  //   element: Myprojects,
-  //   menutype: 'main',
-  //   icon: <MyProjectsSvg />,
-  //   selectedIcon: <MyProjectsSelectedSvg />
-  // },
-  // {
-  //   path: '/intel',
-  //   name: 'Intel',
-  //   element: Summary,
-  //   menutype: 'sub',
-  //   icon: <IntelSvg />,
-  //   selectedIcon: <IntelSelectedSvg />
-  // },
-  // {
-  //   path: '/vision',
-  //   name: 'Vision',
-  //   element: ProjectMap,
-  //   menutype: 'sub',
-  //   icon: <VisionSvg />,
-  //   selectedIcon: <VisionSelectedSvg />
-  // },
-  // {
-  //   path: '/marketplace',
-  //   name: 'Marketplace',
-  //   element: Marketplace,
-  //   menutype: 'main',
-  //   icon: <MarketSvg />,
-  //   selectedIcon: <MarketSelectedSvg />
-  // }
+  {
+    path: '/profile/:id',
+    exact: true,
+    name: 'Profile',
+    element: ProfilePage,
+    menuType: 'sub',
+    icon: <IntelSvg />,
+    selectedIcon: <IntelSelectedSvg />
+  },
 ];
 
 export default routes;

@@ -13,6 +13,8 @@ import EditIcon from "@mui/icons-material/EditOutlined";
 import DoneIcon from "@mui/icons-material/DoneAllTwoTone";
 import RevertIcon from "@mui/icons-material/NotInterestedOutlined";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import { useNavigate } from "react-router-dom";
 
 const useStyles =  makeStyles(theme => ({
   root: {
@@ -67,7 +69,7 @@ const CustomTableCell = ({ row, name, objectKey, onChange }) => {
 };
 
 export default function TableComponent({data, tableHeader, updateHandler, deleteHandler}) {
-
+  const navigate = useNavigate()
   const [rows, setRows] = React.useState([]);
 
   const [previous, setPrevious] = React.useState({});
@@ -140,6 +142,7 @@ export default function TableComponent({data, tableHeader, updateHandler, delete
             {tableHeader && tableHeader.length && tableHeader.map((header) => <TableCell key={header} align="left">{header}</TableCell>)}
             <TableCell align="left">Edit</TableCell>
             <TableCell align="left">Delete</TableCell>
+            <TableCell align="left">Details</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -182,6 +185,13 @@ export default function TableComponent({data, tableHeader, updateHandler, delete
                     onClick={() => deleteUser(row.id)}
                   >
                     <DeleteOutlineOutlinedIcon />
+                  </IconButton>   
+              </TableCell>
+              <TableCell className={classes.selectTableCell}>     
+                  <IconButton
+                    onClick={() => navigate(`/profile/${row.id}`)}
+                  >
+                    <AccountBoxOutlinedIcon />
                   </IconButton>   
               </TableCell>
             </TableRow>

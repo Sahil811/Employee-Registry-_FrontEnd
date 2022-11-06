@@ -9,21 +9,37 @@ import {
   MenuItem,
   Box
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import './index.scss';
 import routes from '../../../route/route';
 
 function NavBar({ mobileOpen, handleDrawerToggle, ...props }) {
-  const [selected] = useState('/userList');
+  const [selected, setSelected] = useState('Employee');
   const { window } = props;
   const navigate = useNavigate();
+  const location = useLocation();
   let showSubMenu = true;
 
+  if (
+    location.pathname.includes('/userList') 
+  ) {
+    showSubMenu = false;
+  }
+
+  useEffect(() => {
+    if (location.pathname.includes('/userList')) setSelected('Employee');
+    if (location.pathname.includes('/profile')) setSelected('Profile');
+  }, [location]);
 
   const container = window !== undefined ? () => window().document.body : undefined;
   const routeChange = (routeName) => {
+    if (routeName.includes('/profile')) {
+      const id = location.pathname.split('/').pop();
+      navigate(`${routeName}/${id}`);
+    } else {
       navigate(routeName);
+    }
   };
 
   const drawer = (
@@ -32,7 +48,7 @@ function NavBar({ mobileOpen, handleDrawerToggle, ...props }) {
       <List className="navbar__list">
         {routes.map((route, index) => (
           <Fragment key={index}>
-            {route.menutype === 'sub' && showSubMenu === false ? (
+            {route.menuType === 'sub' && showSubMenu === false ? (
               ''
             ) : (
               <>
@@ -41,7 +57,7 @@ function NavBar({ mobileOpen, handleDrawerToggle, ...props }) {
                   button
                   className="navbar__listitem"
                   onClick={() => routeChange(route.path)}>
-                  <MenuItem button="true" selected={selected === route.path}>
+                  <MenuItem button="true" selected={selected === route.name}>
                     <ListItemIcon className={`navbar__listitem-icon `}>
                       {selected === route.name ? route.selectedIcon : route.icon}
                     </ListItemIcon>

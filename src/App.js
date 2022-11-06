@@ -6,6 +6,7 @@ import './App.css';
 const Signup = lazy(() => import('./web/pages/Signup'));
 const Login = lazy(() => import('./web/pages/Login'));
 const UserList = lazy(() => import('./web/pages/UserList'));
+const ProfilePage = lazy(() => import('./web/pages/Profile'));
 
 const routes = [
   {
@@ -25,6 +26,12 @@ const routes = [
     exact: true,
     name: 'UserList',
     element: UserList,
+  },
+  {
+    path: '/profile/:id',
+    exact: true,
+    name: 'Profile',
+    element: ProfilePage,
   },
 ];
 

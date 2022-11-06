@@ -53,7 +53,7 @@ export default function Login() {
     if (messageData) {
       if (messageData?.code === 100) {
         toast.success(messageData?.message);
-        setTimeout(() => { navigate("/dashboard") }, 2000)
+        setTimeout(() => { navigate("/userList") }, 2000)
       } else {
         toast.error(messageData?.message);
       }
