@@ -2,6 +2,10 @@ import { createSlice, createAsyncThunk, isPending } from '@reduxjs/toolkit';
 import fetchUtility from '../fetchUtility';
 import { SERVER_URL } from '../../web/constants';
 
+const fileUploadHeader ={ 
+  "Content-Type": "multipart/form-data"
+}
+
 export const employeeListActionCreator = createAsyncThunk(
   "employee/List",
   async (payload) => {
@@ -38,7 +42,20 @@ export const employeeDeleteActionCreator = createAsyncThunk(
   }
 );
 
-const isPendingAction = isPending(employeeListActionCreator, employeeUpdateActionCreator, employeeDeleteActionCreator );
+export const employeeImportActionCreator = createAsyncThunk(
+  "employee/import",
+  async (payload) => {
+    const { data } = await fetchUtility(
+        'post',
+        `${SERVER_URL.EMPLOYEE_IMPORT}`,
+        payload,
+        fileUploadHeader
+      );
+    return data;
+  }
+);
+
+const isPendingAction = isPending(employeeListActionCreator, employeeUpdateActionCreator, employeeDeleteActionCreator, employeeImportActionCreator );
 
 export const  employeeSlice = createSlice({
   name: "employee",
@@ -58,12 +75,10 @@ export const  employeeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(employeeListActionCreator.fulfilled, (state, action) => {
         state.loading = false;
-        // state.messageData = action?.payload
         state.list = action?.payload?.data?.list 
     });
     builder.addCase(employeeListActionCreator.rejected, (state, action) => {
       state.loading = false;
-      // state.messageData = action?.payload;
     });
     builder.addCase(employeeUpdateActionCreator.fulfilled, (state, action) => {
       state.loading = false;
@@ -78,6 +93,14 @@ export const  employeeSlice = createSlice({
       state.messageData = action?.payload
     });
     builder.addCase(employeeDeleteActionCreator.rejected, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload;
+    });
+    builder.addCase(employeeImportActionCreator.fulfilled, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload
+    });
+    builder.addCase(employeeImportActionCreator.rejected, (state, action) => {
       state.loading = false;
       state.messageData = action?.payload;
     });

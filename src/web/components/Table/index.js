@@ -89,8 +89,6 @@ export default function TableComponent({data, tableHeader, updateHandler, delete
     });
   };
 
-  console.log(rows)
-
   const onChange = (e, row) => {
     if (!previous[row.id]) {
       setPrevious(state => ({ ...state, [row.id]: row }));
@@ -139,7 +137,7 @@ export default function TableComponent({data, tableHeader, updateHandler, delete
         <caption>Employee List</caption>
         <TableHead>
           <TableRow>
-            {tableHeader && tableHeader.length && tableHeader.map((header) => <TableCell align="left">{header}</TableCell>)}
+            {tableHeader && tableHeader.length && tableHeader.map((header) => <TableCell key={header} align="left">{header}</TableCell>)}
             <TableCell align="left">Edit</TableCell>
             <TableCell align="left">Delete</TableCell>
           </TableRow>

@@ -7,6 +7,7 @@ export const SERVER_URL = {
   EMPLOYEE_LIST: `${BASIC_URL}/user/list`,
   EMPLOYEE_UPDATE: `${BASIC_URL}/user/update`,
   EMPLOYEE_DELETE: `${BASIC_URL}/user/edit`,
+  EMPLOYEE_IMPORT: `${BASIC_URL}/user/import`,
 };
 
 export const ADMIN_USER_ACTIONS = {
