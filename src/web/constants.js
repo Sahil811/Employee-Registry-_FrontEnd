@@ -9,6 +9,9 @@ export const SERVER_URL = {
   EMPLOYEE_DELETE: `${BASIC_URL}/user/edit`,
   EMPLOYEE_IMPORT: `${BASIC_URL}/user/import`,
   EMPLOYEE_DETAILS: `${BASIC_URL}/user/details`,
+
+  COMMENTS_LIST: `${BASIC_URL}/comment/list`,
+  COMMENTS_CREATE: `${BASIC_URL}/comment/create`,
 };
 
 export const ADMIN_USER_ACTIONS = {
