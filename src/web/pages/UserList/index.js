@@ -15,7 +15,7 @@ export default function UserList() {
   }, [])
 
 
-  const tableHeader = ["No.", "User Name", "Email", "Fist Name", "Last Name", "Address", "Role"]
+  const tableHeader = ["No.", "User Name", "Email", "First Name", "Last Name", "Address", "Role"]
 
   useEffect(() => {
     if (messageData) {

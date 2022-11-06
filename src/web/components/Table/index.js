@@ -35,18 +35,18 @@ const useStyles =  makeStyles(theme => ({
   }
 }));
 
-const createData = (id, userName, email, firsName, lastName, address, role) => ({
+const createData = (id, userName, email, firstName, lastName, address, role) => ({
   id, 
   userName, 
   email, 
-  firsName, 
+  firstName, 
   lastName, 
   address, 
   role,
   isEditMode: false
 });
 
-const CustomTableCell = ({ row, name, onChange }) => {
+const CustomTableCell = ({ row, name, objectKey, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
   return (
@@ -54,12 +54,12 @@ const CustomTableCell = ({ row, name, onChange }) => {
       {isEditMode ? (
         <Input
           value={name}
-          name={Object.keys(row).find(k=> row[k] === name)}
+          name={objectKey}
           onChange={e => onChange(e, row)}
           className={classes.input}
         />
       ) : (
-        name
+        name || "N/A"
       )}
     </TableCell>
   );
@@ -69,7 +69,7 @@ export default function TableComponent({data, tableHeader, update}) {
   const [rows, setRows] = React.useState([]);
 
   if(data && data.length && !rows.length) {
-    const tempRows = data.map((employee) => createData(employee._id, employee.userName, employee.email, employee.firsName, employee.lastName, employee.address, employee.role))
+    const tempRows = data.map((employee) => createData(employee._id, employee.userName, employee.email, employee.firstName, employee.lastName, employee.address, employee.role))
     setRows(tempRows)
   }
   const [previous, setPrevious] = React.useState({});
@@ -139,12 +139,12 @@ export default function TableComponent({data, tableHeader, update}) {
           {rows && rows.length && rows.map((row, index) => (
             <TableRow key={row.id}>
               <TableCell>{index + 1}</TableCell>
-              <CustomTableCell {...{ row, name: row.userName || "NA", onChange }} />
-              <CustomTableCell {...{ row, name: row.email || "NA", onChange }} />
-              <CustomTableCell {...{ row, name: row.firstName || "NA", onChange }} />
-              <CustomTableCell {...{ row, name: row.lastName || "NA", onChange }} />
-              <CustomTableCell {...{ row, name: row.address || "NA", onChange }} />
-              <CustomTableCell {...{ row, name: row.role ||"NA", onChange }} />
+              <CustomTableCell {...{ row, name: row.userName, objectKey: "userName", onChange }} />
+              <CustomTableCell {...{ row, name: row.email , objectKey: "email", onChange }} />
+              <CustomTableCell {...{ row, name: row.firstName, objectKey: "firstName", onChange }} />
+              <CustomTableCell {...{ row, name: row.lastName, objectKey: "lastName", onChange }} />
+              <CustomTableCell {...{ row, name: row.address, objectKey: "address", onChange }} />
+              <CustomTableCell {...{ row, name: row.role, objectKey: "role", onChange }} />
               <TableCell className={classes.selectTableCell}>
                 {row.isEditMode ? (
                   <>
