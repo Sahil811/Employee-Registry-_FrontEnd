@@ -35,13 +35,14 @@ const useStyles =  makeStyles(theme => ({
   }
 }));
 
-const createData = (name, calories, fat, carbs, protein) => ({
-  id: name.replace(" ", "_"),
-  name,
-  calories,
-  fat,
-  carbs,
-  protein,
+const createData = (id, userName, email, firsName, lastName, address, role) => ({
+  id, 
+  userName, 
+  email, 
+  firsName, 
+  lastName, 
+  address, 
+  role,
   isEditMode: false
 });
 
@@ -52,30 +53,31 @@ const CustomTableCell = ({ row, name, onChange }) => {
     <TableCell align="left" className={classes.tableCell}>
       {isEditMode ? (
         <Input
-          value={row[name]}
-          name={name}
+          value={name}
+          name={Object.keys(row).find(k=> row[k] === name)}
           onChange={e => onChange(e, row)}
           className={classes.input}
         />
       ) : (
-        row[name]
+        name
       )}
     </TableCell>
   );
 };
 
-export default function TableComponent() {
-  const [rows, setRows] = React.useState([
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0)
-  ]);
+export default function TableComponent({data, tableHeader, update}) {
+  const [rows, setRows] = React.useState([]);
+
+  if(data && data.length && !rows.length) {
+    const tempRows = data.map((employee) => createData(employee._id, employee.userName, employee.email, employee.firsName, employee.lastName, employee.address, employee.role))
+    setRows(tempRows)
+  }
   const [previous, setPrevious] = React.useState({});
   const classes = useStyles();
 
   const onToggleEditMode = id => {
     setRows(state => {
-      return rows.map(row => {
+      return state.map(row => {
         if (row.id === id) {
           return { ...row, isEditMode: !row.isEditMode };
         }
@@ -83,6 +85,8 @@ export default function TableComponent() {
       });
     });
   };
+
+  console.log(rows)
 
   const onChange = (e, row) => {
     if (!previous[row.id]) {
@@ -115,29 +119,38 @@ export default function TableComponent() {
     onToggleEditMode(id);
   };
 
+  const updateUser = (id) => {
+     data = rows.find(row => row.id === id)
+     update(data)
+     onToggleEditMode(id)
+  }
+
   return (
     <Paper className={classes.root}>
       <Table className={classes.table} aria-label="caption table">
         <caption>Employee List</caption>
         <TableHead>
           <TableRow>
-            <TableCell align="left" />
-            <TableCell align="left">Dessert (100g serving)</TableCell>
-            <TableCell align="left">Calories</TableCell>
-            <TableCell align="left">Fat&nbsp;(g)</TableCell>
-            <TableCell align="left">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="left">Protein&nbsp;(g)</TableCell>
+            {tableHeader && tableHeader.length && tableHeader.map((header) => <TableCell align="left">{header}</TableCell>)}
+            <TableCell align="left">Edit</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
+          {rows && rows.length && rows.map((row, index) => (
             <TableRow key={row.id}>
+              <TableCell>{index + 1}</TableCell>
+              <CustomTableCell {...{ row, name: row.userName || "NA", onChange }} />
+              <CustomTableCell {...{ row, name: row.email || "NA", onChange }} />
+              <CustomTableCell {...{ row, name: row.firstName || "NA", onChange }} />
+              <CustomTableCell {...{ row, name: row.lastName || "NA", onChange }} />
+              <CustomTableCell {...{ row, name: row.address || "NA", onChange }} />
+              <CustomTableCell {...{ row, name: row.role ||"NA", onChange }} />
               <TableCell className={classes.selectTableCell}>
                 {row.isEditMode ? (
                   <>
                     <IconButton
                       aria-label="done"
-                      onClick={() => onToggleEditMode(row.id)}
+                      onClick={() => updateUser(row.id)}
                     >
                       <DoneIcon />
                     </IconButton>
@@ -157,11 +170,6 @@ export default function TableComponent() {
                   </IconButton>
                 )}
               </TableCell>
-              <CustomTableCell {...{ row, name: "name", onChange }} />
-              <CustomTableCell {...{ row, name: "calories", onChange }} />
-              <CustomTableCell {...{ row, name: "fat", onChange }} />
-              <CustomTableCell {...{ row, name: "carbs", onChange }} />
-              <CustomTableCell {...{ row, name: "protein", onChange }} />
             </TableRow>
           ))}
         </TableBody>

@@ -7,7 +7,7 @@ const fetchUtility = async (method, url, payload = {}, headers = {}, options = {
     url,
     data: payload,
     headers: {
-      Authorization: `${Cookie.get('token')}`,
+      Authorization: Cookie.get('token') ? JSON.parse(Cookie.get('token')) : "",
       ...headers
     },
     ...options
