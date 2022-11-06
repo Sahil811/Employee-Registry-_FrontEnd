@@ -55,12 +55,26 @@ export const employeeImportActionCreator = createAsyncThunk(
   }
 );
 
-const isPendingAction = isPending(employeeListActionCreator, employeeUpdateActionCreator, employeeDeleteActionCreator, employeeImportActionCreator );
+export const employeeDetailsActionCreator = createAsyncThunk(
+  "employee/details",
+  async (payload) => {
+    const { data } = await fetchUtility(
+        'post',
+        `${SERVER_URL.EMPLOYEE_DETAILS}`,
+        payload
+      );
+    return data;
+  }
+);
+
+
+const isPendingAction = isPending(employeeListActionCreator, employeeUpdateActionCreator, employeeDeleteActionCreator, employeeImportActionCreator, employeeDetailsActionCreator );
 
 export const  employeeSlice = createSlice({
   name: "employee",
   initialState: {
     list: [],
+    profile: null,
     loading: null,
     error: null,
     messageData: null
@@ -101,6 +115,14 @@ export const  employeeSlice = createSlice({
       state.messageData = action?.payload
     });
     builder.addCase(employeeImportActionCreator.rejected, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload;
+    });
+    builder.addCase(employeeDetailsActionCreator.fulfilled, (state, action) => {
+      state.loading = false;
+      state.profile = action?.payload?.data
+    });
+    builder.addCase(employeeDetailsActionCreator.rejected, (state, action) => {
       state.loading = false;
       state.messageData = action?.payload;
     });

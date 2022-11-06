@@ -6,7 +6,7 @@ import employeeReducer from "../slices/employeeList";
 export default configureStore({
   reducer: {
     userData: userReducer,
-    employeeData:  employeeReducer,
+    employeeData: employeeReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
