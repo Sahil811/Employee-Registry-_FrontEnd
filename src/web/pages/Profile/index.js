@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import { employeeDetailsActionCreator } from "../../../redux/slices/employeeList";
-import { commentCreateActionCreator, commentListActionCreator } from "../../../redux/slices/comments";
+import { commentCreateActionCreator, commentListActionCreator, clearMessageCommentActionCreator, commentUpdateActionCreator } from "../../../redux/slices/comments";
 import { useLocation } from 'react-router-dom';
 import Wrapper from "../../components/Wrapper";
 import DetailCard from "../../components/DetailCard";
@@ -13,6 +13,7 @@ export default function ProfilePage() {
    const pathnameArray = location.pathname.split('/');
    const userId = pathnameArray[pathnameArray.length - 1];
    const profile = useSelector((state) => state.employeeData.profile);
+   const messageData = useSelector((state) => state.commentsData.messageData);
    const comments = useSelector((state) => state.commentsData.list);
    const dispatch = useDispatch();
 
@@ -21,14 +22,32 @@ export default function ProfilePage() {
     dispatch(commentListActionCreator({ userRef: userId }))
    },[])
 
-   console.log(comments, "com")
+  const addCommentHandler = (data) => {
+    dispatch(commentCreateActionCreator({userRef: userId, ...data}))
+  }
+
+  const updateCommentHandler = (data) => {
+    dispatch(commentUpdateActionCreator(data))
+  }
+
+  useEffect(() => {
+    if (messageData) {
+      if (messageData?.code === 100) {
+        toast.success(messageData?.message);
+      } else {
+        toast.error(messageData?.message);
+      }
+      dispatch(clearMessageCommentActionCreator());
+      dispatch(commentListActionCreator({ userRef: userId }))
+    }
+  }, [messageData]);
 
   return <Wrapper>
     <ToastContainer style={{ top: '90px' }} />
      <div>
         <DetailCard text="Employee Details:" data={profile}/>
         <h2>Comments</h2>
-        <Comment data={comments}/>
+        <Comment addHandler={addCommentHandler} updateHandler={updateCommentHandler} data={comments}/>
     </div>
   </Wrapper>
 }

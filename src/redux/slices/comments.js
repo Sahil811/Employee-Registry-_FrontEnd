@@ -26,10 +26,22 @@ export const commentCreateActionCreator = createAsyncThunk(
     }
   );
 
-const isPendingAction = isPending(commentListActionCreator, commentCreateActionCreator);
+  export const commentUpdateActionCreator = createAsyncThunk(
+    "comment/Update",
+    async (payload) => {
+      const { data } = await fetchUtility(
+          'post',
+          `${SERVER_URL.COMMENTS_UPDATE}`,
+          payload
+        );
+      return data;
+    }
+  );
+
+const isPendingAction = isPending(commentListActionCreator, commentCreateActionCreator, commentUpdateActionCreator);
 
 export const  commentsSlice = createSlice({
-  name: "employee",
+  name: "comment",
   initialState: {
     list: [],
     loading: null,
@@ -59,8 +71,16 @@ export const  commentsSlice = createSlice({
        state.loading = false;
        state.messageData = action?.payload;
     });
-    builder.addMatcher(isPendingAction, (state) => {
-        state.loading = true;
+    builder.addCase(commentUpdateActionCreator.fulfilled, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload
+    });
+    builder.addCase(commentUpdateActionCreator.rejected, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload;
+    });
+      builder.addMatcher(isPendingAction, (state) => {
+          state.loading = true;
     });
     builder.addMatcher(
       (action) => action.type.endsWith('/rejected'),
@@ -72,6 +92,6 @@ export const  commentsSlice = createSlice({
   }
 });
 
-export const { clearMessage: clearMessageEmployeeActionCreator } = commentsSlice.actions;
+export const { clearMessage: clearMessageCommentActionCreator } = commentsSlice.actions;
 
 export default commentsSlice.reducer;

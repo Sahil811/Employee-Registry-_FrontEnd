@@ -97,15 +97,18 @@ export default class Comment extends React.Component {
       alert("please add comment");
       return;
     }
-    this.setState(
-      {
-        name: {
-          value: ""
-        },
-        value: [...this.state.value, this.state.name]
-      },
-      () => console.log(this.state)
-    );
+    // this.setState(
+    //   {
+    //     name: {
+    //       value: ""
+    //     },
+    //     value: [...this.state.value, this.state.name]
+    //   },
+    //   () => console.log(this.state)
+    // );
+    this.props.addHandler({
+      text: this.state.name.value
+    })
   };
 
   //remove function to remove items from comments
@@ -138,9 +141,18 @@ export default class Comment extends React.Component {
         : ele.value
     );
 
-    this.setState({ value: item, isEdit: false }, () => {
-      console.log(this.state.value);
-    });
+    // this.setState({ value: item, isEdit: false }, () => {
+    //   console.log(this.state.value);
+    // });
+    this.props.updateHandler({
+      commentRef: this.state.editId,
+      text: this.state.editValue
+    })
+    this.setState({
+      isEdit: false,
+      editValue: "",
+      editId: ""
+    })
   };
 
   render() {
@@ -181,7 +193,7 @@ export default class Comment extends React.Component {
                  margin:20, width:600, backgroundColor:"#E2E5F9",
                  textAlign:"left", padding:10, borderRadius:4,overflow:"auto"}}>
                    <span
-                    style={{ textDecoration: `${this.state.styles1}` }}
+                    style={{ textDecoration: `${this.state.styles1}`, margin: "20px" }}
                     onClick={() => {
                       this.setState({ styles1: "underline" });
                     }}
@@ -196,13 +208,13 @@ export default class Comment extends React.Component {
                   </span>
                   <button
                     style={Styles.buttonEdit}
-                    onClick={e => this.edit(ele.value, ele.id)}
+                    onClick={e => this.edit(ele.text, ele._id)}
                   >
                     edit
                   </button>
                   <button
                     style={Styles.buttonEdit}
-                    onClick={() => this.remove(ele.id)}
+                    onClick={() => this.remove(ele._id)}
                   >
                     remove
                   </button>
