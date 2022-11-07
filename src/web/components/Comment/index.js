@@ -1,7 +1,6 @@
 
 import React from "react";
 import moment from "moment"
-// import { v4 as uuidv4 } from "uuid";
 
 const Styles = {
   input: {
@@ -66,7 +65,7 @@ export default class Comment extends React.Component {
         value: "",
         id: ""
       },
-      value: [...props.data],
+      value: [...this.props.data],
       isEdit: false,
       editValue: "",
       editId: "",
@@ -137,12 +136,12 @@ export default class Comment extends React.Component {
 
   //update function after edit to update item
   update = () => {
-    let value = this.state.value;
-    const item = value.filter(ele =>
-      ele.id === this.state.editId
-        ? (ele.value = this.state.editValue)
-        : ele.value
-    );
+    // let value = this.state.value;
+    // const item = value.filter(ele =>
+    //   ele.id === this.state.editId
+    //     ? (ele.value = this.state.editValue)
+    //     : ele.value
+    // );
 
     // this.setState({ value: item, isEdit: false }, () => {
     //   console.log(this.state.value);
@@ -160,6 +159,7 @@ export default class Comment extends React.Component {
 
   render() {
     const { isEdit } = this.state;
+    console.log(this.state.value, "value")
 
     if (!isEdit) {
       return (
@@ -189,8 +189,8 @@ export default class Comment extends React.Component {
           </div>
 
           <div style={{ margin: 10, display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column" }}>
-            {this.state.value &&
-              this.state.value.map((ele, index) => (
+            {this.props.data &&
+              this.props.data.map((ele, index) => (
                 <div key={ele._id} style={{display:"flex", 
                 justifyContent:"center",alignItems:"center",
                  margin:20, width:600, backgroundColor:"#E2E5F9",
