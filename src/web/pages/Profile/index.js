@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import { employeeDetailsActionCreator } from "../../../redux/slices/employeeList";
-import { commentCreateActionCreator, commentListActionCreator, clearMessageCommentActionCreator, commentUpdateActionCreator } from "../../../redux/slices/comments";
+import { commentCreateActionCreator, commentListActionCreator, clearMessageCommentActionCreator, commentUpdateActionCreator, commentDeleteActionCreator } from "../../../redux/slices/comments";
 import { useLocation } from 'react-router-dom';
 import Wrapper from "../../components/Wrapper";
 import DetailCard from "../../components/DetailCard";
@@ -30,6 +30,10 @@ export default function ProfilePage() {
     dispatch(commentUpdateActionCreator(data))
   }
 
+  const deleteCommentHandler = (data) => {
+    dispatch(commentDeleteActionCreator(data))
+  }
+
   useEffect(() => {
     if (messageData) {
       if (messageData?.code === 100) {
@@ -47,7 +51,7 @@ export default function ProfilePage() {
      <div>
         <DetailCard text="Employee Details:" data={profile}/>
         <h2>Comments</h2>
-        <Comment addHandler={addCommentHandler} updateHandler={updateCommentHandler} data={comments}/>
+        <Comment addHandler={addCommentHandler} updateHandler={updateCommentHandler} deleteHandler={deleteCommentHandler} data={comments}/>
     </div>
   </Wrapper>
 }

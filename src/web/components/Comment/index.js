@@ -113,11 +113,14 @@ export default class Comment extends React.Component {
 
   //remove function to remove items from comments
   remove = id => {
-    let value = this.state.value;
-    const remove = value.filter(ele => ele.id !== id);
-    this.setState({
-      value: remove
-    });
+    // let value = this.state.value;
+    // const remove = value.filter(ele => ele.id !== id);
+    // this.setState({
+    //   value: remove
+    // });
+    this.props.deleteHandler({
+      commentRef: id
+    })
   };
 
   //edit function to edit comment item

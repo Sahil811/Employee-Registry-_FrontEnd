@@ -38,7 +38,19 @@ export const commentCreateActionCreator = createAsyncThunk(
     }
   );
 
-const isPendingAction = isPending(commentListActionCreator, commentCreateActionCreator, commentUpdateActionCreator);
+  export const commentDeleteActionCreator = createAsyncThunk(
+    "comment/Delete",
+    async (payload) => {
+      const { data } = await fetchUtility(
+          'post',
+          `${SERVER_URL.COMMENTS_DELETE}`,
+          payload
+        );
+      return data;
+    }
+  );
+
+const isPendingAction = isPending(commentListActionCreator, commentCreateActionCreator, commentUpdateActionCreator, commentDeleteActionCreator);
 
 export const  commentsSlice = createSlice({
   name: "comment",
@@ -76,6 +88,14 @@ export const  commentsSlice = createSlice({
       state.messageData = action?.payload
     });
     builder.addCase(commentUpdateActionCreator.rejected, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload;
+    });
+    builder.addCase(commentDeleteActionCreator.fulfilled, (state, action) => {
+      state.loading = false;
+      state.messageData = action?.payload
+    });
+    builder.addCase(commentDeleteActionCreator.rejected, (state, action) => {
       state.loading = false;
       state.messageData = action?.payload;
     });

@@ -13,6 +13,7 @@ export const SERVER_URL = {
   COMMENTS_LIST: `${BASIC_URL}/comment/list`,
   COMMENTS_CREATE: `${BASIC_URL}/comment/create`,
   COMMENTS_UPDATE: `${BASIC_URL}/comment/update`,
+  COMMENTS_DELETE: `${BASIC_URL}/comment/delete`,
 };
 
 export const ADMIN_USER_ACTIONS = {
