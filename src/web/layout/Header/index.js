@@ -4,19 +4,18 @@ import { Box, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from '@m
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountCircle } from '@mui/icons-material';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-// import { logoutActionCreator } from '../../../redux/slices/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { logoutActionCreator } from '../../../redux/slices/user';
 
 import NavBar from '../Navbar';
 import './index.scss';
 
-function Header({ user }) {
-  const navigate = useNavigate();
+function Header() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const userInfo = useSelector((state) => state?.userData?.userInfo );
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [role, setRole] = useState('NA');
-  const [name, setName] = useState('NA');
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -25,7 +24,8 @@ function Header({ user }) {
   };
 
   const handleSignOut = () => {
-    // dispatch(logoutActionCreator());
+    dispatch(logoutActionCreator());
+    navigate('/')
   };
 
   const handleClose = () => {
@@ -76,7 +76,7 @@ function Header({ user }) {
               }}
               open={Boolean(anchorEl)}
               onClose={handleClose}>
-              <MenuItem onClick={handleClose}>{name}</MenuItem>
+              <MenuItem onClick={handleClose}>{userInfo?.userName}</MenuItem>
               <MenuItem onClick={handleSignOut}>Logout</MenuItem>
             </Menu>
           </div>

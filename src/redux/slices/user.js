@@ -74,8 +74,12 @@ export const userSlice = createSlice({
         state.loading = false;
         state.messageData = action?.payload
         state.userInfo = action?.payload?.data?.user
-        Cookies.set("userInfo", JSON.stringify(action?.payload?.data?.user));
-        Cookies.set("token", JSON.stringify(action?.payload?.data?.accessToken));
+        if (
+          action?.payload.code === 100
+        ) {
+          Cookies.set("userInfo", JSON.stringify(action?.payload?.data?.user));
+          Cookies.set("token", JSON.stringify(action?.payload?.data?.accessToken));
+        }
       });
       builder.addCase(userLoginActionCreator.rejected, (state, action) => {
         state.loading = false;

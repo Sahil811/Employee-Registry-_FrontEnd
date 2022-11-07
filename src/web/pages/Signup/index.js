@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Cookie from 'js-cookie';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -17,8 +18,14 @@ import Password from "../../UI/InputFields/password";
 
 export default function Signup() {
   const navigate = useNavigate()
-  const messageData = useSelector((state) => state.userData.messageData);
+  const messageData = useSelector((state) => state?.userData?.messageData);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(Cookie.get('token')) {
+      navigate('/userList')
+    }
+  }, [])
 
   //   yup validation schema
   const schema = yup
